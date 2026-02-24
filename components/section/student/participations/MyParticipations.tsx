@@ -456,26 +456,27 @@ export function MyParticipations({
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {eventRegistrations.map((registration) => (
-                <Card key={registration.id} className="overflow-hidden">
-                  <div className="relative h-40">
+                <Card key={registration.id} className="overflow-hidden pt-0">
+                  <div className="relative h-48">
                     <img
                       src={getImageUrl(registration.event.poster_url, "event-posters")}
                       alt={registration.event.name}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute top-2 right-2">
+                    {/* Status badge overlay like main EventCard */}
+                    <div className="absolute top-2 left-2 z-10">
                       {registration.attended ? (
-                        <Badge className="bg-green-500">Attended</Badge>
+                        <Badge className="bg-green-600 text-white shadow">Attended</Badge>
                       ) : (
-                        <Badge variant="secondary">Registered</Badge>
+                        <Badge variant="secondary" className="bg-white/90 text-black shadow">Registered</Badge>
                       )}
                     </div>
                   </div>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg line-clamp-1">
+                  <CardContent className="p-4">
+                    <h3 className="mb-2 line-clamp-1 text-xl font-bold">
                       {registration.event.name}
-                    </CardTitle>
-                    <div className="flex flex-wrap gap-1">
+                    </h3>
+                    <div className="flex flex-wrap gap-1 mb-2">
                       <Badge variant="outline" className="text-xs">
                         {registration.event.event_type}
                       </Badge>
@@ -483,8 +484,6 @@ export function MyParticipations({
                         {registration.event.mode}
                       </Badge>
                     </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
                     <div className="space-y-2 text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <CalendarIcon className="h-4 w-4" />
