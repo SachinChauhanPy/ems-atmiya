@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   const supabase = await createClient();
@@ -10,8 +10,6 @@ export async function GET() {
   if (authError || !user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  const prisma = new PrismaClient();
 
   try {
     // Get all hackathons
@@ -65,7 +63,5 @@ export async function GET() {
       { error: "Failed to fetch hackathons" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

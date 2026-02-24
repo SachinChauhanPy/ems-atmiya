@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export async function updatePhone(phone: string) {
   const supabase = await createClient();
@@ -25,7 +25,6 @@ export async function updatePhone(phone: string) {
     return { error: 'Failed to update phone number in Supabase' };
   }
 
-  const prisma = new PrismaClient();
   try {
     await prisma.user.update({
       where: { supabaseId: user.id },
@@ -34,7 +33,5 @@ export async function updatePhone(phone: string) {
     return { success: true };
   } catch (error) {
     return { error: 'Failed to update phone number' };
-  } finally {
-    await prisma.$disconnect();
   }
 }

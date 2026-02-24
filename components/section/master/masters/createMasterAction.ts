@@ -2,7 +2,7 @@
 
 import { masterSchema, MasterSchema } from "@/schemas/master";
 import { createClient } from "@/utils/supabase/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export async function createMasterAction(data: MasterSchema, captchaToken: string) {
   const supabase = await createClient();
@@ -34,7 +34,6 @@ export async function createMasterAction(data: MasterSchema, captchaToken: strin
     return { error: error ? error.message : "Failed to register user with Supabase" };
   }
 
-  const prisma = new PrismaClient();
   try {
     await prisma.user.create({
       data: {
@@ -52,7 +51,5 @@ export async function createMasterAction(data: MasterSchema, captchaToken: strin
   } catch (error) {
     console.error("Database error:", error);
     return { error: "Internal Server Error" };
-  } finally {
-    await prisma.$disconnect();
   }
 }

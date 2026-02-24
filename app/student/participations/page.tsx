@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { MyParticipations } from "@/components/section/student/participations/MyParticipations";
 import { Participation, PendingInvitation } from "@/types/hackathon";
@@ -14,8 +14,6 @@ export default async function ParticipationsPage() {
   if (!user) {
     redirect("/login");
   }
-
-  const prisma = new PrismaClient();
 
   try {
     // Find the student record
@@ -261,7 +259,5 @@ export default async function ParticipationsPage() {
         </div>
       </div>
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

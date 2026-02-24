@@ -1,10 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-
-  const prisma = new PrismaClient();
 
   try {
     const events = await prisma.event.findUnique({
@@ -33,7 +31,5 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
   } catch (error) {
     console.error("Error fetching event:", error);
     return NextResponse.json("Failed to fetch events", { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }

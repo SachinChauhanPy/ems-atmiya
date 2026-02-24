@@ -4,7 +4,7 @@ import { QRCodeService } from "@/lib/qr-code";
 import { onboardingStudentSchema, OnboardingStudentSchema } from "@/schemas/onboardingStudentSchema";
 import { createAdminClient } from "@/utils/supabase/admin-server";
 import { createClient } from "@/utils/supabase/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export async function onboardingStudent(data: OnboardingStudentSchema) {
   const validatedData = onboardingStudentSchema.safeParse(data);
@@ -12,7 +12,6 @@ export async function onboardingStudent(data: OnboardingStudentSchema) {
     return { error: "Onboarding data is invalid" };
   }
 
-  const prisma = new PrismaClient();
   const supabase = await createClient();
   const adminSupabase = await createAdminClient();
 
@@ -111,7 +110,5 @@ export async function onboardingStudent(data: OnboardingStudentSchema) {
     console.error("Error during onboarding:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return { error: "Failed to complete onboarding", message: errorMessage };
-  } finally {
-    await prisma.$disconnect();
   }
 }
