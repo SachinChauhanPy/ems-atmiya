@@ -39,7 +39,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: '/ADSC-Icons/launcher-icon-4x.png',
         sizes: '192x192',
         type: 'image/png',
-        purpose: 'maskable any',
+        purpose: 'maskable',
       },
       {
         src: '/ADSC-Icons/apple-touch-icon.png',
