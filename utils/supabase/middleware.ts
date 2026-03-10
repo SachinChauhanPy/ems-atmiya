@@ -72,7 +72,13 @@ export async function updateSession(request: NextRequest) {
       console.log("Authenticated user trying to access auth route, redirecting to dashboard");
       return redirectTo(accessPath, request);
     }
+    
+    // Allow access to public routes even when authenticated (e.g., browsing hackathons)
+    if (isPublicRoute(currentPath)) {
+      return response;
+    }
 
+    
     // If onboarding is not complete, redirect to onboarding (except if already on onboarding)
     if (!onboardingComplete && currentPath !== "/onboarding") {
       console.log("Onboarding not complete, redirecting to onboarding");
