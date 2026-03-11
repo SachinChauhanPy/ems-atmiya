@@ -225,7 +225,7 @@ model HackathonTeam {
   submissionUrl            String?
   leaderId                 String?
   hackathon                Hackathon                  @relation(fields: [hackathonId], references: [id])
-  problemStatement         HackathonProblemStatement? @relation(fields: [problemStatementId], references: [id], onDelete: Cascade)
+  problemStatement         HackathonProblemStatement? @relation(fields: [problemStatementId], references: [id], onDelete: SetNull)
   leader                   Student?                   @relation("TeamLeader", fields: [leaderId], references: [id])
   invites                  HackathonTeamInvite[]
   members                  HackathonTeamMember[]
