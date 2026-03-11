@@ -46,6 +46,19 @@ export async function createTeamAction(teamData: TeamSchema, hackathonId: string
       return { error: "Only students can create or join teams" };
     }
 
+    // Check if hackathon restricts enrollment to Atmiya students only
+    const hackathonForRestriction = await prisma.hackathon.findUnique({
+      where: { id: hackathonId },
+      select: { allow_external_students: true },
+    });
+
+    if (hackathonForRestriction && !hackathonForRestriction.allow_external_students) {
+      // External students have `university` set and no `departmentId`
+      if (!student.departmentId) {
+        return { error: "This hackathon is restricted to Atmiya University students only" };
+      }
+    }
+
     // Check if user is already in a team for this hackathon
     const existingMembership = await prisma.hackathonTeamMember.findFirst({
       where: {
